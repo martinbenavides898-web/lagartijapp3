@@ -1,0 +1,5 @@
+streamlit==1.60.0
+gspread==6.2.1
+google-auth==2.56.2
+pandas==3.0.5
+altair==6.2.2
