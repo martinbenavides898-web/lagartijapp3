@@ -19,6 +19,7 @@ from app.config import (
     APP_NAME,
     STYLES_FILE,
     TIM_LOGO_FILE,
+    TIM_HERO_FILE,
     TIPO_DESCANSO,
     TIPO_ESTOCADAS,
     TIPO_FLEXIONES,
@@ -153,6 +154,7 @@ pr_est = max_diario(df, TIPO_ESTOCADAS, excluir_hoy=False)
 
 fecha_txt = hoy_chile().strftime("%d/%m/%Y")
 tim_logo_uri = image_data_uri(TIM_LOGO_FILE)
+tim_hero_uri = image_data_uri(TIM_HERO_FILE)
 
 st.markdown(
     f"""
@@ -226,6 +228,7 @@ st.html(
         plancha=plan_hoy,
         sentadillas=sent_hoy,
         estocadas=est_hoy,
+        hero_uri=tim_hero_uri,
     )
 )
 
@@ -246,7 +249,7 @@ tab_e, tab_d, tab_p, tab_a = st.tabs(
 with tab_e:
     with st.container(key="flex_zone"):
         if st.button(
-            "FLEXIONES  ·  +5 REPETICIONES",
+            "FLEXIONES",
             width="stretch",
             key="btn_f5",
         ):
@@ -287,7 +290,7 @@ with tab_e:
 
     with st.container(key="plan_zone"):
         if st.button(
-            "PLANCHA  ·  +10 SEGUNDOS",
+            "PLANCHA",
             width="stretch",
             key="btn_p10",
         ):
@@ -328,7 +331,7 @@ with tab_e:
 
     with st.container(key="sent_zone"):
         if st.button(
-            "SENTADILLAS  ·  +5 REPETICIONES",
+            "SENTADILLAS",
             width="stretch",
             key="btn_s5",
         ):
@@ -369,7 +372,7 @@ with tab_e:
 
     with st.container(key="est_zone"):
         if st.button(
-            "ESTOCADAS  ·  +5 POR PIERNA",
+            "ESTOCADAS",
             width="stretch",
             key="btn_e5",
         ):

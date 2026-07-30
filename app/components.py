@@ -134,13 +134,17 @@ def dashboard_html(
     plancha: int,
     sentadillas: int,
     estocadas: int,
+    hero_uri: str,
 ) -> str:
-    """Dashboard unido para impedir que el anillo se desacople."""
+    """Dashboard unido con Tim como protagonista visual del progreso."""
     return f"""
 <div class="rings-master-card tim-dashboard">
   <div class="tim-ring-panel">
     {rings_html(flexiones, plancha)}
-    <div class="tim-ring-center">
+    <div class="tim-ring-hero">
+      <img src="{hero_uri}" alt="Tim">
+    </div>
+    <div class="tim-ring-badge">
       <span>HOY</span>
       <strong>{flexiones}</strong>
       <small>flexiones</small>

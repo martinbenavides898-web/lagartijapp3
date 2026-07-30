@@ -1552,3 +1552,250 @@ div[data-testid="stSlider"] [role="slider"] {
   }
 }
 
+
+
+/* ============================================================
+   TIM ENERGY — SPRINT VISUAL 3
+   Tim protagonista, tabs más encachadas, botones más limpios.
+   ============================================================ */
+
+/* ---------- TOPBAR ---------- */
+.ios-topbar {
+  grid-template-columns: 88px minmax(0, 1fr) auto !important;
+  min-height: 130px !important;
+  padding: 18px 22px !important;
+}
+
+.tim-topbar-logo {
+  width: 72px;
+  height: 72px;
+  border: none !important;
+  border-radius: 22px;
+  box-shadow:
+    0 14px 34px rgba(0, 5, 34, 0.30),
+    0 0 24px rgba(91, 162, 255, 0.14);
+}
+
+.tim-topbar-copy .ios-topbar-title {
+  font-size: clamp(34px, 7vw, 48px) !important;
+  letter-spacing: -1.8px;
+}
+
+.tim-topbar-subtitle {
+  font-size: 13px;
+  font-weight: 760;
+  color: #C8D7F8;
+}
+
+/* ---------- BOTÓN FUI AL BAÑO ---------- */
+.btn-top-bath div[data-testid="stButton"] > button {
+  min-height: 80px !important;
+  color: #F7FAFF !important;
+  font-size: clamp(21px, 4vw, 28px) !important;
+  font-weight: 1000 !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(163, 214, 255, 0.50) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.26), transparent 32%),
+    linear-gradient(120deg, #60C8FF, #2C79FF) !important;
+  box-shadow: 0 14px 34px rgba(35, 113, 255, 0.24) !important;
+}
+
+.btn-top-bath div[data-testid="stButton"] > button::after {
+  content: "RUTINA EXPRESS";
+  color: rgba(236, 245, 255, 0.82);
+  bottom: 10px;
+  font-size: 9px;
+}
+
+/* ---------- DASHBOARD CON TIM ---------- */
+.tim-ring-panel {
+  min-height: 340px;
+}
+
+.tim-ring-svg {
+  width: min(100%, 312px);
+  opacity: 0.94;
+}
+
+.tim-ring-hero {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 146px;
+  height: 146px;
+  overflow: hidden;
+  border-radius: 34px;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 18px 42px rgba(0, 8, 42, 0.28),
+    0 0 25px rgba(100, 185, 255, 0.18);
+}
+
+.tim-ring-hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tim-ring-badge {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 3;
+  display: flex;
+  width: 124px;
+  min-height: 78px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: translateX(-50%);
+  border: 1px solid rgba(186, 221, 255, 0.13);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 42% 12%, rgba(255,255,255,0.08), transparent 34%),
+    rgba(7, 22, 65, 0.92);
+  box-shadow:
+    0 12px 28px rgba(0, 5, 29, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.tim-ring-badge span {
+  color: #AFC2EB;
+  font-size: 8px;
+  font-weight: 1000;
+  letter-spacing: 0.18em;
+}
+
+.tim-ring-badge strong {
+  color: #F7FAFF;
+  font-size: 30px;
+  font-weight: 1000;
+  line-height: 1;
+  letter-spacing: -1.2px;
+}
+
+.tim-ring-badge small {
+  margin-top: 3px;
+  color: #9AF06B;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- TABS ---------- */
+[data-testid="stTabs"] [data-baseweb="tab-list"] {
+  gap: 10px !important;
+  padding: 8px !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(145deg, rgba(10, 42, 120, 0.75), rgba(6, 24, 65, 0.82)) !important;
+  box-shadow:
+    0 10px 24px rgba(0, 6, 35, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+[data-testid="stTabs"] button {
+  min-height: 76px !important;
+  font-size: 16px !important;
+  font-weight: 1000 !important;
+  letter-spacing: -0.2px !important;
+  border-radius: 18px !important;
+  font-family:
+    "Avenir Next Rounded",
+    "Nunito",
+    "Segoe UI",
+    system-ui,
+    sans-serif !important;
+}
+
+[data-testid="stTabs"] button::after {
+  font-size: 9px !important;
+  letter-spacing: 0.15em !important;
+}
+
+[data-testid="stTabs"] [aria-selected="true"] {
+  color: #071123 !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.32), transparent 32%),
+    linear-gradient(120deg, #B9FF83, #84E85C) !important;
+}
+
+/* ---------- BOTONES DE EJERCICIO ---------- */
+.st-key-flex_zone div[data-testid="stButton"] > button,
+.st-key-plan_zone div[data-testid="stButton"] > button,
+.st-key-sent_zone div[data-testid="stButton"] > button,
+.st-key-est_zone div[data-testid="stButton"] > button {
+  min-height: 74px !important;
+  font-size: clamp(18px, 4vw, 22px) !important;
+  letter-spacing: -0.25px !important;
+  font-family:
+    "Avenir Next Rounded",
+    "Nunito",
+    "Segoe UI",
+    system-ui,
+    sans-serif !important;
+}
+
+.st-key-flex_zone div[data-testid="stButton"] > button::after,
+.st-key-plan_zone div[data-testid="stButton"] > button::after,
+.st-key-sent_zone div[data-testid="stButton"] > button::after,
+.st-key-est_zone div[data-testid="stButton"] > button::after {
+  content: "";
+}
+
+.st-key-flex_zone div[data-testid="stButton"] > button:first-of-type,
+.st-key-plan_zone div[data-testid="stButton"] > button:first-of-type,
+.st-key-sent_zone div[data-testid="stButton"] > button:first-of-type,
+.st-key-est_zone div[data-testid="stButton"] > button:first-of-type {
+  text-transform: uppercase !important;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 760px) {
+  .ios-topbar {
+    grid-template-columns: 70px minmax(0, 1fr) !important;
+  }
+
+  .tim-topbar-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+  }
+
+  .tim-ring-panel {
+    min-height: 310px;
+  }
+
+  .tim-ring-hero {
+    width: 128px;
+    height: 128px;
+    border-radius: 30px;
+  }
+
+  .tim-ring-badge {
+    width: 118px;
+  }
+
+  [data-testid="stTabs"] button {
+    min-height: 70px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .tim-ring-svg {
+    width: min(100%, 284px);
+  }
+
+  .tim-ring-hero {
+    width: 120px;
+    height: 120px;
+  }
+
+  .tim-ring-badge {
+    bottom: 16px;
+  }
+}
