@@ -6,6 +6,7 @@ pasó a ser la fuente principal de datos.
 """
 
 import altair as alt
+import pandas as pd
 import streamlit as st
 from PIL import Image
 
@@ -21,6 +22,7 @@ from app.config import (
     TIM_LOGO_FILE,
     TIM_HERO_FILE,
     TIM_PEEK_FILE,
+    TIM_DASH_FILE,
     TIPO_DESCANSO,
     TIPO_ESTOCADAS,
     TIPO_FLEXIONES,
@@ -60,6 +62,64 @@ st.logo(str(TIM_LOGO_FILE), icon_image=str(TIM_LOGO_FILE))
 
 def sync_deuda(input_key: str, state_key: str) -> None:
     st.session_state[state_key] = int(st.session_state.get(input_key, 0) or 0)
+
+
+def tim_bar_chart(series, color: str, height: int = 180):
+    """Bar chart con fondo azul Tim Energy, evitando el negro por defecto."""
+    sdf = series.reset_index()
+    sdf.columns = ["Fecha", "Cantidad"]
+    sdf["Fecha"] = sdf["Fecha"].astype(str)
+
+    chart = (
+        alt.Chart(sdf)
+        .mark_bar(cornerRadiusTopLeft=5, cornerRadiusTopRight=5)
+        .encode(
+            x=alt.X("Fecha:O", title=None, axis=alt.Axis(labelAngle=-90, labelPadding=8)),
+            y=alt.Y("Cantidad:Q", title=None),
+            color=alt.value(color),
+            tooltip=["Fecha", "Cantidad"],
+        )
+        .properties(height=height)
+        .configure_view(strokeWidth=0, fill="#071A52")
+        .configure_axis(
+            labelColor="#D7E3FF",
+            titleColor="#D7E3FF",
+            gridColor="rgba(180,210,255,0.12)",
+        )
+        .configure(background="#071A52")
+    )
+    st.altair_chart(chart, width="stretch")
+
+
+def tim_line_chart(pdf, color: str = "#62C5FF", height: int = 260):
+    """Line chart con estética azul integrada."""
+    ldf = pdf.reset_index()
+    if len(ldf.columns) == 2:
+        ldf.columns = ["Fecha", "Valor"]
+    else:
+        ldf = ldf.iloc[:, :2]
+        ldf.columns = ["Fecha", "Valor"]
+    ldf["Fecha"] = ldf["Fecha"].astype(str)
+
+    chart = (
+        alt.Chart(ldf)
+        .mark_line(point=True, strokeWidth=3)
+        .encode(
+            x=alt.X("Fecha:O", title=None, axis=alt.Axis(labelAngle=-35, labelPadding=8)),
+            y=alt.Y("Valor:Q", title=None),
+            color=alt.value(color),
+            tooltip=["Fecha", "Valor"],
+        )
+        .properties(height=height)
+        .configure_view(strokeWidth=0, fill="#071A52")
+        .configure_axis(
+            labelColor="#D7E3FF",
+            titleColor="#D7E3FF",
+            gridColor="rgba(180,210,255,0.12)",
+        )
+        .configure(background="#071A52")
+    )
+    st.altair_chart(chart, width="stretch")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -157,6 +217,7 @@ fecha_txt = hoy_chile().strftime("%d/%m/%Y")
 tim_logo_uri = image_data_uri(TIM_LOGO_FILE)
 tim_hero_uri = image_data_uri(TIM_HERO_FILE)
 tim_peek_uri = image_data_uri(TIM_PEEK_FILE)
+tim_dash_uri = image_data_uri(TIM_DASH_FILE)
 
 st.markdown(
     f"""
@@ -230,7 +291,7 @@ st.html(
         plancha=plan_hoy,
         sentadillas=sent_hoy,
         estocadas=est_hoy,
-        tim_uri=tim_peek_uri,
+        tim_uri=tim_dash_uri,
     )
 )
 
@@ -497,7 +558,7 @@ with tab_p:
 
     pdf = peso_semanal(df)
     if not pdf.empty:
-        st.line_chart(pdf, width="stretch", height=260, color="#62C5FF")
+        tim_line_chart(pdf, color="#62C5FF", height=260)
     else:
         st.info("Sin registros de peso aun.")
 
@@ -528,7 +589,7 @@ with tab_a:
                 tooltip=["Hora", "Tipo_Ejercicio", "Cantidad"],
             )
             .properties(height=240)
-            .configure_view(strokeWidth=0)
+            .configure_view(strokeWidth=0, fill="#071A52")
             .configure_axis(labelColor="#AFC2EB", titleColor="#AFC2EB", gridColor="rgba(180,210,255,0.10)")
             .configure(background="#071A52")
         )
@@ -579,19 +640,19 @@ with tab_a:
 
     if not fc.empty:
         st.markdown('<p style="color:#9AF06B;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Flexiones</p>', unsafe_allow_html=True)
-        st.bar_chart(fc, width="stretch", height=180, color="#9AF06B")
+        tim_bar_chart(fc, "#9AF06B", height=180)
     
     if not pc.empty:
         st.markdown('<p style="color:#62C5FF;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Plancha</p>', unsafe_allow_html=True)
-        st.bar_chart(pc, width="stretch", height=180, color="#62C5FF")
+        tim_bar_chart(pc, "#62C5FF", height=180)
         
     if not sc.empty:
         st.markdown('<p style="color:#48E8D1;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Sentadillas</p>', unsafe_allow_html=True)
-        st.bar_chart(sc, width="stretch", height=180, color="#48E8D1")
+        tim_bar_chart(sc, "#48E8D1", height=180)
 
     if not ec.empty:
         st.markdown('<p style="color:#FFD15C;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Estocadas</p>', unsafe_allow_html=True)
-        st.bar_chart(ec, width="stretch", height=180, color="#FFD15C")
+        tim_bar_chart(ec, "#FFD15C", height=180)
 
     st.markdown("""
 <div class="fit-card" style="margin-top:16px">

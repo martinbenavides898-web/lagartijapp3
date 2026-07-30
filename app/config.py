@@ -16,6 +16,7 @@ STYLES_FILE = ROOT_DIR / "assets" / "styles.css"
 TIM_LOGO_FILE = ROOT_DIR / "assets" / "tim_logo.png"
 TIM_HERO_FILE = ROOT_DIR / "assets" / "tim_hero.png"
 TIM_PEEK_FILE = ROOT_DIR / "assets" / "tim_peek.png"
+TIM_DASH_FILE = ROOT_DIR / "assets" / "tim_dash.png"
 
 SHEET_FILE_NAME = "LagartijApp_DB"
 SHEET_WORKSHEET_INDEX = 0
