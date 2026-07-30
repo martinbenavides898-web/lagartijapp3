@@ -7,11 +7,18 @@ pasó a ser la fuente principal de datos.
 
 import altair as alt
 import streamlit as st
+from PIL import Image
 
-from app.components import calendario_html, descargar_csv, rings_html
+from app.components import (
+    calendario_html,
+    dashboard_html,
+    descargar_csv,
+    image_data_uri,
+)
 from app.config import (
     APP_NAME,
     STYLES_FILE,
+    TIM_LOGO_FILE,
     TIPO_DESCANSO,
     TIPO_ESTOCADAS,
     TIPO_FLEXIONES,
@@ -39,13 +46,14 @@ from app.workout_service import (
 
 st.set_page_config(
     page_title=APP_NAME,
-    page_icon="L",
+    page_icon=Image.open(TIM_LOGO_FILE),
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
 # Streamlit interpreta directamente un archivo .css pasado a st.html.
 st.html(STYLES_FILE)
+st.logo(str(TIM_LOGO_FILE), icon_image=str(TIM_LOGO_FILE))
 
 
 def sync_deuda(input_key: str, state_key: str) -> None:
@@ -144,13 +152,21 @@ pr_est = max_diario(df, TIPO_ESTOCADAS, excluir_hoy=False)
 # ─────────────────────────────────────────────────────────────
 
 fecha_txt = hoy_chile().strftime("%d/%m/%Y")
+tim_logo_uri = image_data_uri(TIM_LOGO_FILE)
 
-st.markdown(f"""
+st.markdown(
+    f"""
 <div class="ios-topbar">
-  <span class="ios-topbar-title">LagartijApp</span>
+  <img class="tim-topbar-logo" src="{tim_logo_uri}" alt="Tim">
+  <div class="tim-topbar-copy">
+    <span class="ios-topbar-title">LagartijApp</span>
+    <span class="tim-topbar-subtitle">Muévete un poco. Suma todos los días.</span>
+  </div>
   <span class="ios-topbar-date">{fecha_txt}</span>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 st.markdown('<div class="btn-top-bath">', unsafe_allow_html=True)
 
@@ -204,44 +220,23 @@ if st.session_state.sick_ok:
 # DASHBOARD DE ANILLOS Y ESTADÍSTICAS
 # ─────────────────────────────────────────────────────────────
 
-st.markdown('<div class="rings-master-card">', unsafe_allow_html=True)
-col_ring, col_data = st.columns([1.05, 0.95])
-
-with col_ring:
-    st.markdown('<div class="ring-visual-wrap">', unsafe_allow_html=True)
-    st.image(rings_html(flex_hoy, plan_hoy), width=260)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with col_data:
-    st.markdown(f"""
-<div class="ring-data-stack">
-  <div class="ring-stat">
-    <div class="ring-stat-label">Flexiones</div>
-    <div class="ring-stat-value c-pink">{flex_hoy}</div>
-  </div>
-  <div class="ring-stat">
-    <div class="ring-stat-label">Plancha</div>
-    <div class="ring-stat-value c-lime">{plan_hoy}s</div>
-  </div>
-  <div class="ring-stat">
-    <div class="ring-stat-label">Sentadillas</div>
-    <div class="ring-stat-value c-cyan">{sent_hoy}</div>
-  </div>
-  <div class="ring-stat">
-    <div class="ring-stat-label">Estocadas (X Pierna)</div>
-    <div class="ring-stat-value c-orange">{est_hoy}</div>
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
+st.html(
+    dashboard_html(
+        flexiones=flex_hoy,
+        plancha=plan_hoy,
+        sentadillas=sent_hoy,
+        estocadas=est_hoy,
+    )
+)
 
 
 # ─────────────────────────────────────────────────────────────
 # TABS
 # ─────────────────────────────────────────────────────────────
 
-tab_e, tab_d, tab_p, tab_a = st.tabs(["Entreno", "Oficina / Calle", "Peso", "Analisis"])
+tab_e, tab_d, tab_p, tab_a = st.tabs(
+    ["Entreno", "Oficina / Calle", "Peso", "Análisis"]
+)
 
 
 # ══════════════════════════════════════════════════════════════
@@ -249,121 +244,169 @@ tab_e, tab_d, tab_p, tab_a = st.tabs(["Entreno", "Oficina / Calle", "Peso", "Ana
 # ══════════════════════════════════════════════════════════════
 
 with tab_e:
-    # ── FLEXIONES ──
-    st.markdown("""
-<div class="exercise-card">
-  <div class="card-label">Ejercicio</div>
-  <div class="exercise-title c-pink">FLEXIONES</div>
-  <div class="exercise-subtitle">Un toque registra 5 repeticiones.</div>
-</div>
-""", unsafe_allow_html=True)
+    with st.container(key="flex_zone"):
+        if st.button(
+            "FLEXIONES  ·  +5 REPETICIONES",
+            width="stretch",
+            key="btn_f5",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_FLEXIONES,
+                5,
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
+            st.session_state.guardado_ok = True
+            st.rerun()
 
-    st.markdown('<div class="btn-pink">', unsafe_allow_html=True)
-    if st.button("+ 5 Flexiones", width="stretch", key="btn_f5"):
-        registrar_con_pr(df, TIPO_FLEXIONES, 5, peso=peso_ult, rpe=rpe_actual)
-        st.session_state.guardado_ok = True
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    mfk = f"mf_{st.session_state.manual_ver}"
-    st.markdown('<div class="manual-row">', unsafe_allow_html=True)
-    mf = st.number_input("Cantidad exacta de flexiones", min_value=0, max_value=3000, value=0, step=1, key=mfk)
-    st.markdown("</div>", unsafe_allow_html=True)
-    if mf > 0:
-        st.markdown('<div class="btn-pink">', unsafe_allow_html=True)
-        if st.button("Guardar flexiones", width="stretch", key="btn_mf"):
-            registrar_con_pr(df, TIPO_FLEXIONES, int(mf), peso=peso_ult, rpe=rpe_actual)
+        mfk = f"mf_{st.session_state.manual_ver}"
+        mf = st.number_input(
+            "Cantidad exacta de flexiones",
+            min_value=0,
+            max_value=3000,
+            value=0,
+            step=1,
+            key=mfk,
+        )
+        if mf > 0 and st.button(
+            "GUARDAR FLEXIONES EXACTAS",
+            width="stretch",
+            key="btn_mf",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_FLEXIONES,
+                int(mf),
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
             st.session_state.manual_ver += 1
             st.session_state.guardado_ok = True
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── PLANCHA ──
-    st.markdown("""
-<div class="exercise-card">
-  <div class="card-label">Ejercicio</div>
-  <div class="exercise-title c-lime">PLANCHA</div>
-  <div class="exercise-subtitle">Un toque registra 10 segundos.</div>
-</div>
-""", unsafe_allow_html=True)
+    with st.container(key="plan_zone"):
+        if st.button(
+            "PLANCHA  ·  +10 SEGUNDOS",
+            width="stretch",
+            key="btn_p10",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_PLANCHA,
+                10,
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
+            st.session_state.guardado_ok = True
+            st.rerun()
 
-    st.markdown('<div class="btn-lime">', unsafe_allow_html=True)
-    if st.button("+ 10 segundos", width="stretch", key="btn_p10"):
-        registrar_con_pr(df, TIPO_PLANCHA, 10, peso=peso_ult, rpe=rpe_actual)
-        st.session_state.guardado_ok = True
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    mpk = f"mp_{st.session_state.manual_ver}"
-    st.markdown('<div class="manual-row">', unsafe_allow_html=True)
-    mp = st.number_input("Segundos exactos de plancha", min_value=0, max_value=30000, value=0, step=5, key=mpk)
-    st.markdown("</div>", unsafe_allow_html=True)
-    if mp > 0:
-        st.markdown('<div class="btn-lime">', unsafe_allow_html=True)
-        if st.button("Guardar plancha", width="stretch", key="btn_mp"):
-            registrar_con_pr(df, TIPO_PLANCHA, int(mp), peso=peso_ult, rpe=rpe_actual)
+        mpk = f"mp_{st.session_state.manual_ver}"
+        mp = st.number_input(
+            "Segundos exactos de plancha",
+            min_value=0,
+            max_value=30000,
+            value=0,
+            step=5,
+            key=mpk,
+        )
+        if mp > 0 and st.button(
+            "GUARDAR PLANCHA EXACTA",
+            width="stretch",
+            key="btn_mp",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_PLANCHA,
+                int(mp),
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
             st.session_state.manual_ver += 1
             st.session_state.guardado_ok = True
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── SENTADILLAS ──
-    st.markdown("""
-<div class="exercise-card">
-  <div class="card-label">Ejercicio</div>
-  <div class="exercise-title c-cyan">SENTADILLAS</div>
-  <div class="exercise-subtitle">Un toque registra 5 repeticiones.</div>
-</div>
-""", unsafe_allow_html=True)
+    with st.container(key="sent_zone"):
+        if st.button(
+            "SENTADILLAS  ·  +5 REPETICIONES",
+            width="stretch",
+            key="btn_s5",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_SENTADILLAS,
+                5,
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
+            st.session_state.guardado_ok = True
+            st.rerun()
 
-    st.markdown('<div class="btn-cyan">', unsafe_allow_html=True)
-    if st.button("+ 5 Sentadillas", width="stretch", key="btn_s5"):
-        registrar_con_pr(df, TIPO_SENTADILLAS, 5, peso=peso_ult, rpe=rpe_actual)
-        st.session_state.guardado_ok = True
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    msk = f"ms_{st.session_state.manual_ver}"
-    st.markdown('<div class="manual-row">', unsafe_allow_html=True)
-    ms = st.number_input("Cantidad exacta de sentadillas", min_value=0, max_value=3000, value=0, step=1, key=msk)
-    st.markdown("</div>", unsafe_allow_html=True)
-    if ms > 0:
-        st.markdown('<div class="btn-cyan">', unsafe_allow_html=True)
-        if st.button("Guardar sentadillas", width="stretch", key="btn_ms"):
-            registrar_con_pr(df, TIPO_SENTADILLAS, int(ms), peso=peso_ult, rpe=rpe_actual)
+        msk = f"ms_{st.session_state.manual_ver}"
+        ms = st.number_input(
+            "Cantidad exacta de sentadillas",
+            min_value=0,
+            max_value=3000,
+            value=0,
+            step=1,
+            key=msk,
+        )
+        if ms > 0 and st.button(
+            "GUARDAR SENTADILLAS EXACTAS",
+            width="stretch",
+            key="btn_ms",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_SENTADILLAS,
+                int(ms),
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
             st.session_state.manual_ver += 1
             st.session_state.guardado_ok = True
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── ESTOCADAS ──
-    st.markdown("""
-<div class="exercise-card">
-  <div class="card-label">Ejercicio</div>
-  <div class="exercise-title c-orange">ESTOCADAS</div>
-  <div class="exercise-subtitle">Un toque registra 5 repeticiones (por pierna).</div>
-</div>
-""", unsafe_allow_html=True)
+    with st.container(key="est_zone"):
+        if st.button(
+            "ESTOCADAS  ·  +5 POR PIERNA",
+            width="stretch",
+            key="btn_e5",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_ESTOCADAS,
+                5,
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
+            st.session_state.guardado_ok = True
+            st.rerun()
 
-    st.markdown('<div class="btn-orange-big">', unsafe_allow_html=True)
-    if st.button("+ 5 Estocadas (x pierna)", width="stretch", key="btn_e5"):
-        registrar_con_pr(df, TIPO_ESTOCADAS, 5, peso=peso_ult, rpe=rpe_actual)
-        st.session_state.guardado_ok = True
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    mek = f"me_{st.session_state.manual_ver}"
-    st.markdown('<div class="manual-row">', unsafe_allow_html=True)
-    me = st.number_input("Cantidad exacta de estocadas (x pierna)", min_value=0, max_value=3000, value=0, step=1, key=mek)
-    st.markdown("</div>", unsafe_allow_html=True)
-    if me > 0:
-        st.markdown('<div class="btn-orange-big">', unsafe_allow_html=True)
-        if st.button("Guardar estocadas", width="stretch", key="btn_me"):
-            registrar_con_pr(df, TIPO_ESTOCADAS, int(me), peso=peso_ult, rpe=rpe_actual)
+        mek = f"me_{st.session_state.manual_ver}"
+        me = st.number_input(
+            "Cantidad exacta de estocadas por pierna",
+            min_value=0,
+            max_value=3000,
+            value=0,
+            step=1,
+            key=mek,
+        )
+        if me > 0 and st.button(
+            "GUARDAR ESTOCADAS EXACTAS",
+            width="stretch",
+            key="btn_me",
+        ):
+            registrar_con_pr(
+                df,
+                TIPO_ESTOCADAS,
+                int(me),
+                peso=peso_ult,
+                rpe=rpe_actual,
+            )
             st.session_state.manual_ver += 1
             st.session_state.guardado_ok = True
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════
@@ -449,7 +492,7 @@ with tab_p:
 
     pdf = peso_semanal(df)
     if not pdf.empty:
-        st.line_chart(pdf, width="stretch", height=260, color="#0A84FF")
+        st.line_chart(pdf, width="stretch", height=260, color="#62C5FF")
     else:
         st.info("Sin registros de peso aun.")
 
@@ -476,13 +519,13 @@ with tab_a:
             .encode(
                 x=alt.X("Hora:O", title="Hora"),
                 y=alt.Y("Cantidad:Q", title=""),
-                color=alt.Color("activo:N", scale=alt.Scale(domain=["activo", "inactivo"], range=["#00FFFF", "#3A3A3C"]), legend=None),
+                color=alt.Color("activo:N", scale=alt.Scale(domain=["activo", "inactivo"], range=["#9AF06B", "#284A82"]), legend=None),
                 tooltip=["Hora", "Tipo_Ejercicio", "Cantidad"],
             )
             .properties(height=240)
             .configure_view(strokeWidth=0)
-            .configure_axis(labelColor="#8E8E93", titleColor="#8E8E93", gridColor="rgba(255,255,255,0.06)")
-            .configure(background="#000000")
+            .configure_axis(labelColor="#AFC2EB", titleColor="#AFC2EB", gridColor="rgba(180,210,255,0.10)")
+            .configure(background="#071A52")
         )
         st.altair_chart(chart, width="stretch")
     else:
@@ -532,20 +575,20 @@ with tab_a:
     ec = progreso_diario(df, TIPO_ESTOCADAS, 14)
 
     if not fc.empty:
-        st.markdown('<p style="color:#FF2D55;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Flexiones</p>', unsafe_allow_html=True)
-        st.bar_chart(fc, width="stretch", height=180, color="#FF2D55")
+        st.markdown('<p style="color:#9AF06B;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Flexiones</p>', unsafe_allow_html=True)
+        st.bar_chart(fc, width="stretch", height=180, color="#9AF06B")
     
     if not pc.empty:
-        st.markdown('<p style="color:#A1FF00;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Plancha</p>', unsafe_allow_html=True)
-        st.bar_chart(pc, width="stretch", height=180, color="#A1FF00")
+        st.markdown('<p style="color:#62C5FF;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Plancha</p>', unsafe_allow_html=True)
+        st.bar_chart(pc, width="stretch", height=180, color="#62C5FF")
         
     if not sc.empty:
-        st.markdown('<p style="color:#00FFFF;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Sentadillas</p>', unsafe_allow_html=True)
-        st.bar_chart(sc, width="stretch", height=180, color="#00FFFF")
+        st.markdown('<p style="color:#48E8D1;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Sentadillas</p>', unsafe_allow_html=True)
+        st.bar_chart(sc, width="stretch", height=180, color="#48E8D1")
 
     if not ec.empty:
-        st.markdown('<p style="color:#FF9500;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Estocadas</p>', unsafe_allow_html=True)
-        st.bar_chart(ec, width="stretch", height=180, color="#FF9500")
+        st.markdown('<p style="color:#FFD15C;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px">Estocadas</p>', unsafe_allow_html=True)
+        st.bar_chart(ec, width="stretch", height=180, color="#FFD15C")
 
     st.markdown("""
 <div class="fit-card" style="margin-top:16px">

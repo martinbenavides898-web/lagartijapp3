@@ -13,6 +13,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT_DIR / "data_lagartijas.csv"
 OLD_DATA_FILE = ROOT_DIR / "data_entreno.csv"
 STYLES_FILE = ROOT_DIR / "assets" / "styles.css"
+TIM_LOGO_FILE = ROOT_DIR / "assets" / "tim_logo.png"
 
 SHEET_FILE_NAME = "LagartijApp_DB"
 SHEET_WORKSHEET_INDEX = 0

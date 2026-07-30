@@ -1142,3 +1142,413 @@ div[data-testid="stSlider"] [role="slider"] {
     animation: none !important;
   }
 }
+
+/* ============================================================
+   TIM ENERGY — SPRINT VISUAL 2
+   Logo real, anillos unidos, tabs grandes, botones integrados,
+   tablas azul profundo.
+   ============================================================ */
+
+/* ---------- TOPBAR CON LOGO REAL ---------- */
+.ios-topbar {
+  display: grid !important;
+  grid-template-columns: 74px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  min-height: 126px !important;
+  padding: 18px 22px !important;
+}
+
+.ios-topbar::before {
+  display: none !important;
+}
+
+.tim-topbar-logo {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid rgba(200, 255, 172, 0.55);
+  border-radius: 20px;
+  box-shadow:
+    0 11px 27px rgba(0, 5, 34, 0.33),
+    0 0 25px rgba(154, 240, 107, 0.20);
+}
+
+.tim-topbar-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.tim-topbar-subtitle {
+  color: #BFD0F3;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+
+/* ---------- DASHBOARD / ANILLOS UNIDOS ---------- */
+.tim-dashboard {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 1.05fr) minmax(260px, 0.95fr);
+  align-items: center;
+  gap: 20px;
+}
+
+.tim-ring-panel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  overflow: hidden;
+  border: 1px solid rgba(168, 207, 255, 0.12);
+  border-radius: 25px;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(58, 149, 255, 0.28), transparent 48%),
+    radial-gradient(circle at 48% 49%, rgba(154, 240, 107, 0.09), transparent 33%),
+    linear-gradient(145deg, #0A2A78, #061841);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    inset 0 -22px 48px rgba(1,8,34,0.22);
+}
+
+.tim-ring-svg {
+  display: block;
+  width: min(100%, 294px);
+  height: auto;
+  overflow: visible;
+}
+
+.tim-ring-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  width: 112px;
+  height: 112px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(183, 221, 255, 0.11);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 45% 30%, rgba(255,255,255,0.08), transparent 38%),
+    rgba(6, 24, 65, 0.93);
+  box-shadow:
+    0 10px 26px rgba(0, 5, 29, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.tim-ring-center span {
+  color: #AFC2EB;
+  font-size: 8px;
+  font-weight: 1000;
+  letter-spacing: 0.18em;
+}
+
+.tim-ring-center strong {
+  color: #F7FAFF;
+  font-size: 34px;
+  font-weight: 1000;
+  line-height: 1;
+  letter-spacing: -1.3px;
+}
+
+.tim-ring-center small {
+  margin-top: 3px;
+  color: #9AF06B;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.tim-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.tim-stats-grid .ring-stat {
+  display: flex;
+  min-height: 112px;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px 14px 16px 18px;
+}
+
+.tim-stats-grid .ring-stat-value {
+  font-size: clamp(29px, 5vw, 39px);
+}
+
+.tim-stat-flex::before {
+  background: #9AF06B !important;
+}
+
+.tim-stat-plan::before {
+  background: #62C5FF !important;
+}
+
+.tim-stat-sent::before {
+  background: #48E8D1 !important;
+}
+
+.tim-stat-est::before {
+  background: #FFD15C !important;
+}
+
+
+/* ---------- NAVEGACIÓN GRANDE CON SUBTÍTULOS ---------- */
+[data-testid="stTabs"] [data-baseweb="tab-list"] {
+  width: 100% !important;
+  gap: 8px !important;
+  padding: 7px !important;
+  border-radius: 23px !important;
+}
+
+[data-testid="stTabs"] button {
+  display: flex !important;
+  min-width: 0 !important;
+  min-height: 72px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 0 !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 9px 12px !important;
+  font-size: 15px !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.15px !important;
+  text-align: center !important;
+  white-space: normal !important;
+  border-radius: 17px !important;
+}
+
+[data-testid="stTabs"] button::after {
+  display: block;
+  color: currentColor;
+  font-size: 8px;
+  font-weight: 1000;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  opacity: 0.63;
+}
+
+[data-testid="stTabs"] button:nth-child(1)::after {
+  content: "RUTINA";
+}
+
+[data-testid="stTabs"] button:nth-child(2)::after {
+  content: "DEUDA";
+}
+
+[data-testid="stTabs"] button:nth-child(3)::after {
+  content: "SEGUIMIENTO";
+}
+
+[data-testid="stTabs"] button:nth-child(4)::after {
+  content: "PROGRESO";
+}
+
+
+/* ---------- BLOQUES DE EJERCICIO REALES ----------
+   Los botones, el título y la acción ahora son la misma pieza. */
+.st-key-flex_zone,
+.st-key-plan_zone,
+.st-key-sent_zone,
+.st-key-est_zone {
+  margin-bottom: 16px;
+  padding: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(179, 211, 255, 0.13);
+  border-radius: 23px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(78, 152, 255, 0.12), transparent 34%),
+    linear-gradient(145deg, rgba(14, 48, 131, 0.91), rgba(7, 26, 79, 0.95));
+  box-shadow: var(--shadow-card);
+}
+
+.st-key-flex_zone div[data-testid="stButton"] > button,
+.st-key-plan_zone div[data-testid="stButton"] > button,
+.st-key-sent_zone div[data-testid="stButton"] > button,
+.st-key-est_zone div[data-testid="stButton"] > button {
+  min-height: 76px !important;
+  font-size: clamp(15px, 4vw, 19px) !important;
+  font-weight: 1000 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.01em !important;
+  border-radius: 19px !important;
+}
+
+.st-key-flex_zone div[data-testid="stButton"] > button {
+  color: #071123 !important;
+  border-color: rgba(209, 255, 184, 0.55) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.34), transparent 32%),
+    linear-gradient(120deg, #B9FF83, #78DF55) !important;
+  box-shadow: var(--shadow-green) !important;
+}
+
+.st-key-plan_zone div[data-testid="stButton"] > button {
+  color: #FFFFFF !important;
+  border-color: rgba(151, 210, 255, 0.50) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.24), transparent 32%),
+    linear-gradient(120deg, #66C9FF, #267CFF) !important;
+  box-shadow: var(--shadow-blue) !important;
+}
+
+.st-key-sent_zone div[data-testid="stButton"] > button {
+  color: #061B21 !important;
+  border-color: rgba(173, 255, 242, 0.48) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.30), transparent 32%),
+    linear-gradient(120deg, #7FF5E2, #39D8C0) !important;
+  box-shadow: 0 14px 34px rgba(51, 210, 185, 0.22) !important;
+}
+
+.st-key-est_zone div[data-testid="stButton"] > button {
+  color: #251B03 !important;
+  border-color: rgba(255, 232, 173, 0.50) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.30), transparent 32%),
+    linear-gradient(120deg, #FFE58D, #FFB84D) !important;
+  box-shadow: 0 14px 34px rgba(255, 184, 77, 0.20) !important;
+}
+
+.st-key-flex_zone div[data-testid="stNumberInput"],
+.st-key-plan_zone div[data-testid="stNumberInput"],
+.st-key-sent_zone div[data-testid="stNumberInput"],
+.st-key-est_zone div[data-testid="stNumberInput"] {
+  margin-top: 9px;
+}
+
+
+/* ---------- TABLAS SIN NEGRO ---------- */
+[data-testid="stDataFrame"] {
+  overflow: hidden !important;
+  border: 1px solid rgba(168, 205, 255, 0.17) !important;
+  border-radius: 21px !important;
+  background: #071A52 !important;
+  box-shadow: var(--shadow-card) !important;
+
+  --gdg-bg-cell: #071A52;
+  --gdg-bg-cell-medium: #0A2468;
+  --gdg-bg-header: #0B2F7A;
+  --gdg-bg-header-has-focus: #123E94;
+  --gdg-bg-header-hovered: #123E94;
+  --gdg-border-color: #284A82;
+  --gdg-horizontal-border-color: rgba(95, 139, 209, 0.28);
+  --gdg-text-dark: #F7FAFF;
+  --gdg-text-medium: #D7E3FF;
+  --gdg-text-light: #9EB1DD;
+  --gdg-accent-color: #9AF06B;
+  --gdg-accent-light: rgba(154, 240, 107, 0.16);
+  --gdg-link-color: #62C5FF;
+}
+
+[data-testid="stDataFrame"] > div,
+[data-testid="stDataFrame"] canvas {
+  background-color: #071A52 !important;
+}
+
+[data-testid="stTable"] {
+  color: #F7FAFF !important;
+  background: #071A52 !important;
+}
+
+[data-testid="stTable"] th {
+  color: #F7FAFF !important;
+  background: #0B2F7A !important;
+}
+
+[data-testid="stTable"] td {
+  color: #D7E3FF !important;
+  background: #071A52 !important;
+  border-color: #284A82 !important;
+}
+
+
+/* ---------- GRÁFICOS SIN NEGRO ---------- */
+[data-testid="stVegaLiteChart"],
+[data-testid="stArrowVegaLiteChart"],
+[data-testid="stLineChart"],
+[data-testid="stBarChart"] {
+  background:
+    linear-gradient(145deg, rgba(10, 42, 120, 0.88), rgba(6, 24, 65, 0.94)) !important;
+}
+
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 760px) {
+  .ios-topbar {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    min-height: 112px !important;
+    padding: 16px !important;
+  }
+
+  .tim-topbar-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 17px;
+  }
+
+  .ios-topbar-date {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .tim-dashboard {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .tim-ring-panel {
+    min-height: 285px;
+  }
+
+  .tim-ring-svg {
+    width: min(100%, 270px);
+  }
+
+  .tim-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  [data-testid="stTabs"] button {
+    min-height: 66px !important;
+    padding: 8px 8px !important;
+    font-size: 12px !important;
+  }
+
+  [data-testid="stTabs"] button::after {
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 430px) {
+  .tim-stats-grid .ring-stat {
+    min-height: 98px;
+  }
+
+  .tim-ring-panel {
+    min-height: 265px;
+  }
+
+  [data-testid="stTabs"] [data-baseweb="tab-list"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [data-testid="stTabs"] button {
+    width: 100% !important;
+  }
+}
+
