@@ -20,6 +20,7 @@ from app.config import (
     STYLES_FILE,
     TIM_LOGO_FILE,
     TIM_HERO_FILE,
+    TIM_PEEK_FILE,
     TIPO_DESCANSO,
     TIPO_ESTOCADAS,
     TIPO_FLEXIONES,
@@ -155,6 +156,7 @@ pr_est = max_diario(df, TIPO_ESTOCADAS, excluir_hoy=False)
 fecha_txt = hoy_chile().strftime("%d/%m/%Y")
 tim_logo_uri = image_data_uri(TIM_LOGO_FILE)
 tim_hero_uri = image_data_uri(TIM_HERO_FILE)
+tim_peek_uri = image_data_uri(TIM_PEEK_FILE)
 
 st.markdown(
     f"""
@@ -228,7 +230,7 @@ st.html(
         plancha=plan_hoy,
         sentadillas=sent_hoy,
         estocadas=est_hoy,
-        hero_uri=tim_hero_uri,
+        tim_uri=tim_peek_uri,
     )
 )
 
@@ -534,15 +536,13 @@ with tab_a:
     else:
         st.info("Sin actividad registrada hoy.")
 
-    st.markdown("""
-<div class="fit-card">
-  <div class="card-label">Ultimos 35 dias</div>
-  <div class="card-title">Calendario</div>
-  <div class="card-sub">Verde: actividad. Naranja: dia libre. Gris: sin registro.</div>
-</div>
-""", unsafe_allow_html=True)
-
-    st.markdown(calendario_html(df, dias=35), unsafe_allow_html=True)
+    st.html(
+        calendario_html(
+            df,
+            dias=35,
+            tim_uri=tim_peek_uri,
+        )
+    )
 
     st.markdown(f"""
 <div class="impact-grid" style="margin-top:16px">

@@ -134,20 +134,21 @@ def dashboard_html(
     plancha: int,
     sentadillas: int,
     estocadas: int,
-    hero_uri: str,
+    tim_uri: str,
 ) -> str:
-    """Dashboard unido con Tim como protagonista visual del progreso."""
+    """Dashboard diario con Tim integrado en la misma composición."""
     return f"""
 <div class="rings-master-card tim-dashboard">
   <div class="tim-ring-panel">
     {rings_html(flexiones, plancha)}
-    <div class="tim-ring-hero">
-      <img src="{hero_uri}" alt="Tim">
-    </div>
-    <div class="tim-ring-badge">
-      <span>HOY</span>
-      <strong>{flexiones}</strong>
-      <small>flexiones</small>
+
+    <div class="tim-ring-integrated">
+      <img class="tim-peek-dashboard" src="{tim_uri}" alt="Tim">
+      <div class="tim-today-copy">
+        <span>HOY</span>
+        <strong>{flexiones}</strong>
+        <small>FLEXIONES</small>
+      </div>
     </div>
   </div>
 
@@ -176,7 +177,12 @@ def dashboard_html(
 """
 
 
-def calendario_html(df: pd.DataFrame, dias: int = 35) -> str:
+def calendario_html(
+    df: pd.DataFrame,
+    dias: int = 35,
+    tim_uri: str = "",
+) -> str:
+    """Calendario con Tim integrado dentro del mismo recuadro."""
     activas = fechas_activas(df)
     descansos = fechas_descanso(df)
     inicio = hoy_chile() - timedelta(days=dias - 1)
@@ -213,14 +219,35 @@ def calendario_html(df: pd.DataFrame, dias: int = 35) -> str:
             "</div>"
         )
 
-    return (
-        f'<div class="cal-wrap"><div class="cal-grid">{cells}</div>'
-        '<div class="cal-legend">'
-        '<span><span class="dot dot-lime"></span>Actividad</span>'
-        '<span><span class="dot dot-orange"></span>Día libre</span>'
-        '<span><span class="dot dot-gray"></span>Sin registro</span>'
-        "</div></div>"
-    )
+    return f"""
+<div class="calendar-showcase">
+  <div class="calendar-tim-zone">
+    <div class="calendar-tim-glow"></div>
+    <img class="calendar-tim-img" src="{tim_uri}" alt="Tim observando el calendario">
+  </div>
+
+  <div class="calendar-main">
+    <div class="calendar-header">
+      <div>
+        <div class="card-label">ÚLTIMOS 35 DÍAS</div>
+        <div class="card-title">Calendario</div>
+        <div class="card-sub">
+          Verde: actividad · Naranjo: día libre · Azul: sin registro
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-wrap">
+      <div class="cal-grid">{cells}</div>
+      <div class="cal-legend">
+        <span><span class="dot dot-lime"></span>Actividad</span>
+        <span><span class="dot dot-orange"></span>Día libre</span>
+        <span><span class="dot dot-gray"></span>Sin registro</span>
+      </div>
+    </div>
+  </div>
+</div>
+"""
 
 
 def descargar_csv(df: pd.DataFrame) -> bytes:

@@ -1799,3 +1799,309 @@ div[data-testid="stSlider"] [role="slider"] {
     bottom: 16px;
   }
 }
+
+/* ============================================================
+   TIM ENERGY — SPRINT VISUAL 4
+   Tim transparente e integrado en dashboard y calendario.
+   ============================================================ */
+
+/* ---------- DASHBOARD: UNA SOLA PIEZA ---------- */
+.tim-ring-panel {
+  position: relative;
+  min-height: 342px !important;
+  overflow: hidden;
+}
+
+.tim-ring-svg {
+  position: absolute;
+  left: 48%;
+  top: 50%;
+  z-index: 1;
+  width: min(92%, 320px) !important;
+  height: auto;
+  opacity: 0.73;
+  transform: translate(-50%, -50%);
+}
+
+.tim-ring-integrated {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 100%;
+  min-height: 342px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(110px, 0.75fr);
+  align-items: center;
+  padding: 28px 24px 18px;
+}
+
+.tim-peek-dashboard {
+  display: block;
+  width: min(118%, 255px);
+  max-width: none;
+  align-self: end;
+  justify-self: start;
+  margin-left: -24px;
+  margin-bottom: -18px;
+  filter:
+    drop-shadow(0 16px 24px rgba(0, 8, 42, 0.30))
+    drop-shadow(0 0 18px rgba(154, 240, 107, 0.12));
+}
+
+.tim-today-copy {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  justify-self: center;
+  padding-right: 8px;
+  text-align: left;
+  text-shadow: 0 8px 22px rgba(0, 6, 35, 0.30);
+}
+
+.tim-today-copy span {
+  color: #B9C9EC;
+  font-size: 10px;
+  font-weight: 1000;
+  letter-spacing: 0.20em;
+}
+
+.tim-today-copy strong {
+  color: #F7FAFF;
+  font-size: clamp(48px, 8vw, 66px);
+  font-weight: 1000;
+  line-height: 0.88;
+  letter-spacing: -2.5px;
+}
+
+.tim-today-copy small {
+  margin-top: 8px;
+  color: #9AF06B;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: 0.11em;
+}
+
+/* Se eliminan visualmente los antiguos marcos de imagen. */
+.tim-ring-hero,
+.tim-ring-badge,
+.tim-ring-center {
+  display: none !important;
+}
+
+
+/* ---------- CALENDARIO: TIM DENTRO DEL RECUADRO ---------- */
+.calendar-showcase {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(170px, 0.68fr) minmax(0, 1.72fr);
+  min-height: 365px;
+  overflow: hidden;
+  border: 1px solid rgba(181, 211, 255, 0.15);
+  border-radius: 27px;
+  background:
+    radial-gradient(circle at 0% 50%, rgba(154, 240, 107, 0.10), transparent 31%),
+    radial-gradient(circle at 100% 0%, rgba(58, 136, 255, 0.15), transparent 36%),
+    linear-gradient(145deg, rgba(14, 48, 131, 0.94), rgba(6, 24, 65, 0.97));
+  box-shadow: var(--shadow-card);
+}
+
+.calendar-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 23%,
+      rgba(158, 200, 255, 0.07) 23.1%,
+      transparent 23.4%
+    );
+}
+
+.calendar-tim-zone {
+  position: relative;
+  min-height: 365px;
+  overflow: hidden;
+}
+
+.calendar-tim-glow {
+  position: absolute;
+  left: -70px;
+  bottom: -80px;
+  width: 330px;
+  height: 330px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(154, 240, 107, 0.16) 0%,
+      rgba(67, 145, 255, 0.10) 42%,
+      transparent 70%
+    );
+  filter: blur(2px);
+}
+
+.calendar-tim-img {
+  position: absolute;
+  left: -58px;
+  bottom: -4px;
+  z-index: 2;
+  display: block;
+  width: 310px;
+  max-width: none;
+  filter:
+    drop-shadow(0 18px 28px rgba(0, 7, 39, 0.32))
+    drop-shadow(0 0 17px rgba(154, 240, 107, 0.10));
+}
+
+.calendar-main {
+  position: relative;
+  z-index: 2;
+  padding: 25px 25px 20px 8px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.calendar-header .card-title {
+  font-size: 29px;
+  letter-spacing: -0.9px;
+}
+
+.calendar-header .card-sub {
+  max-width: 500px;
+  margin-bottom: 0;
+}
+
+.calendar-main .cal-wrap {
+  margin-top: 0;
+}
+
+.calendar-main .cal-grid {
+  gap: 8px;
+}
+
+.calendar-main .cal-cell {
+  min-width: 0;
+  border-radius: 12px;
+  background: rgba(41, 86, 166, 0.26);
+}
+
+.calendar-main .cal-legend {
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+
+/* ---------- TABLET / MOBILE ---------- */
+@media (max-width: 760px) {
+  .tim-ring-integrated {
+    min-height: 310px;
+    grid-template-columns: minmax(0, 1.18fr) minmax(105px, 0.82fr);
+    padding: 22px 18px 14px;
+  }
+
+  .tim-peek-dashboard {
+    width: min(128%, 230px);
+    margin-left: -30px;
+    margin-bottom: -14px;
+  }
+
+  .tim-today-copy strong {
+    font-size: 50px;
+  }
+
+  .calendar-showcase {
+    grid-template-columns: 145px minmax(0, 1fr);
+  }
+
+  .calendar-tim-zone {
+    min-height: 360px;
+  }
+
+  .calendar-tim-img {
+    left: -72px;
+    width: 270px;
+  }
+
+  .calendar-main {
+    padding: 22px 16px 18px 4px;
+  }
+
+  .calendar-header .card-title {
+    font-size: 25px;
+  }
+
+  .calendar-main .cal-grid {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 520px) {
+  .tim-ring-integrated {
+    min-height: 292px;
+    grid-template-columns: 1.18fr 0.82fr;
+    padding: 17px 10px 10px;
+  }
+
+  .tim-peek-dashboard {
+    width: 215px;
+    margin-left: -52px;
+    margin-bottom: -10px;
+  }
+
+  .tim-today-copy {
+    padding-right: 0;
+    transform: translateX(-5px);
+  }
+
+  .tim-today-copy strong {
+    font-size: 46px;
+  }
+
+  .calendar-showcase {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .calendar-showcase::before {
+    display: none;
+  }
+
+  .calendar-tim-zone {
+    min-height: 148px;
+    background:
+      radial-gradient(circle at 50% 100%, rgba(154,240,107,0.13), transparent 62%);
+  }
+
+  .calendar-tim-img {
+    left: 50%;
+    bottom: -34px;
+    width: 285px;
+    transform: translateX(-50%);
+  }
+
+  .calendar-main {
+    padding: 10px 15px 18px;
+  }
+
+  .calendar-header {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .calendar-header .card-sub {
+    font-size: 11px;
+  }
+
+  .calendar-main .cal-legend {
+    justify-content: center;
+  }
+}
+
