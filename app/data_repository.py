@@ -95,7 +95,9 @@ def normalizar_df(df: pd.DataFrame) -> pd.DataFrame:
         if col not in out.columns:
             out[col] = None
 
-    out["Fecha"] = pd.to_datetime(out["Fecha"], errors="coerce")
+    out["Fecha"] = pd.to_datetime(
+        out["Fecha"], errors="coerce", format="mixed", dayfirst=True
+    )
     out = out.dropna(subset=["Fecha"])
     out["Fecha"] = out["Fecha"].dt.tz_localize(None)
 
@@ -130,6 +132,20 @@ def _hay_credenciales_google() -> bool:
         return "gcp_service_account" in st.secrets
     except Exception:
         return False
+
+
+def _version_datos() -> int:
+    try:
+        return _version_datos()
+    except Exception:
+        return 0
+
+
+def _avanzar_version_datos() -> None:
+    try:
+        st.session_state["datos_version"] = _version_datos() + 1
+    except Exception:
+        pass
 
 
 @st.cache_resource
@@ -174,8 +190,10 @@ def _df_desde_sheet(sheet) -> pd.DataFrame:
     return normalizar_df(pd.DataFrame(rows, columns=COLUMNAS))
 
 
-@st.cache_data(ttl=30, show_spinner=False)
-def _cargar_sheet_cache() -> pd.DataFrame:
+@st.cache_data(ttl=5, show_spinner=False)
+def _cargar_sheet_cache(version: int = 0) -> pd.DataFrame:
+    """Lee la hoja; ``version`` permite invalidar el caché tras guardar."""
+    del version
     return _df_desde_sheet(conectar_sheet())
 
 
@@ -196,7 +214,9 @@ def cargar_datos() -> tuple[pd.DataFrame, EstadoDatos]:
         )
 
     try:
-        remote = _cargar_sheet_cache()
+        remote = _cargar_sheet_cache(
+            _version_datos()
+        )
         if remote.empty and not local.empty:
             return local, EstadoDatos(
                 fuente="CSV local de respaldo",
@@ -276,6 +296,7 @@ def agregar_registros(
 
         try:
             conectar_sheet().append_rows(rows, value_input_option="USER_ENTERED")
+            _avanzar_version_datos()
             _cargar_sheet_cache.clear()
         except Exception as exc:
             raise ErrorEscrituraDatos(

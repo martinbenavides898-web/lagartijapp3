@@ -30,6 +30,7 @@ def arrow_polygon(cx: float, cy: float, radius: float, progress: float, size: fl
 
 
 def rings_html(flexiones: int, plancha: int) -> str:
+    """Devuelve los anillos como SVG para mostrarlos con ``st.image``."""
     outer_r, inner_r = 100, 62
     outer_c, inner_c = 2 * math.pi * outer_r, 2 * math.pi * inner_r
     flex_progress = pct(flexiones, META_FLEXIONES)
@@ -44,18 +45,15 @@ def rings_html(flexiones: int, plancha: int) -> str:
         f'<polygon points="{inner_arrow}" fill="#A1FF00" />' if inner_arrow else ""
     )
 
-    return f"""
-<div style="height:280px;display:flex;align-items:center;justify-content:center;background:#1C1C1E;overflow:hidden">
-<svg viewBox="0 0 260 260" width="260" height="260" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:visible;background:#1C1C1E">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" width="260" height="260">
+  <rect width="260" height="260" rx="24" fill="#1C1C1E" />
   <circle cx="130" cy="130" r="{outer_r}" fill="none" stroke="#5C1828" stroke-width="32" />
   <circle cx="130" cy="130" r="{outer_r}" fill="none" stroke="#FF2D55" stroke-width="32" stroke-linecap="round" stroke-dasharray="{outer_dash:.2f} {outer_c:.2f}" transform="rotate(-90 130 130)" />
   {outer_arrow_svg}
   <circle cx="130" cy="130" r="{inner_r}" fill="none" stroke="#3E650A" stroke-width="32" />
   <circle cx="130" cy="130" r="{inner_r}" fill="none" stroke="#A1FF00" stroke-width="32" stroke-linecap="round" stroke-dasharray="{inner_dash:.2f} {inner_c:.2f}" transform="rotate(-90 130 130)" />
   {inner_arrow_svg}
-</svg>
-</div>
-"""
+</svg>"""
 
 
 def calendario_html(df: pd.DataFrame, dias: int = 35) -> str:

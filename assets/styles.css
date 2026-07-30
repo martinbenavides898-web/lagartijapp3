@@ -179,6 +179,11 @@ html, body, [class*="css"] {
   justify-content: center;
 }
 
+div[data-testid="stImage"] {
+  display: flex !important;
+  justify-content: center !important;
+}
+
 iframe, [data-testid="stIFrame"] {
   border: 0 !important;
   background: #1C1C1E !important;

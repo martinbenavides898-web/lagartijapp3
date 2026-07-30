@@ -60,6 +60,30 @@ def test_normaliza_csv_actual():
     assert result.iloc[0]["Peso"] == 85.4
 
 
+def test_normaliza_fechas_mixtas():
+    source = pd.DataFrame(
+        [
+            {
+                "Fecha": "16/06/2026 12:30:00",
+                "Tipo_Ejercicio": TIPO_FLEXIONES,
+                "Cantidad": 5,
+                "Peso": None,
+                "RPE_Esfuerzo": 7,
+            },
+            {
+                "Fecha": "2026-07-29 19:50:00",
+                "Tipo_Ejercicio": TIPO_FLEXIONES,
+                "Cantidad": 1,
+                "Peso": None,
+                "RPE_Esfuerzo": 1,
+            },
+        ]
+    )
+    result = repo.normalizar_df(source)
+    assert len(result) == 2
+    assert result["Cantidad"].sum() == 6
+
+
 def test_normaliza_formato_antiguo():
     source = pd.DataFrame(
         [{"fecha": "2026-07-29 12:30:00", "lagartijas": 10, "plancha_segundos": 30}]
@@ -81,6 +105,15 @@ def test_lectura_sheet_ignora_columna_extra():
     assert len(result) == 1
     assert list(result.columns) == COLUMNAS
     assert result.iloc[0]["Cantidad"] == 5
+
+
+def test_fechas_mixtas_no_se_pierden():
+    source = pd.DataFrame([
+        {"Fecha": "29/07/2026 19:50:00", "Tipo_Ejercicio": TIPO_FLEXIONES, "Cantidad": 5, "Peso": "", "RPE_Esfuerzo": 7},
+        {"Fecha": "2026-07-29 19:51:00", "Tipo_Ejercicio": TIPO_PLANCHA, "Cantidad": 20, "Peso": "", "RPE_Esfuerzo": 7},
+    ])
+    result = repo.normalizar_df(source)
+    assert len(result) == 2
 
 
 def test_guardado_local_en_lote():
@@ -154,8 +187,10 @@ def test_sheet_vacio_conserva_respaldo_local():
 if __name__ == "__main__":
     tests = [
         test_normaliza_csv_actual,
+        test_normaliza_fechas_mixtas,
         test_normaliza_formato_antiguo,
         test_lectura_sheet_ignora_columna_extra,
+        test_fechas_mixtas_no_se_pierden,
         test_guardado_local_en_lote,
         test_guardado_remoto_usa_una_sola_llamada_para_lote,
         test_sheet_vacio_conserva_respaldo_local,

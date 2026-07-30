@@ -67,6 +67,7 @@ defaults = {
     "deuda_ok": False,
     "guardado_ok": False,
     "sick_ok": False,
+    "datos_version": 0,
 }
 
 for key, value in defaults.items():
@@ -208,7 +209,7 @@ col_ring, col_data = st.columns([1.05, 0.95])
 
 with col_ring:
     st.markdown('<div class="ring-visual-wrap">', unsafe_allow_html=True)
-    st.html(rings_html(flex_hoy, plan_hoy))
+    st.image(rings_html(flex_hoy, plan_hoy), width=260)
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_data:
